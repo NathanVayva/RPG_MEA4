@@ -1,55 +1,32 @@
-/*
- * personnage.h
- *
- *  Created on: 16 déc. 2025
- *      Author: nathan
- */
-#include<stdio.h>
-#include<string>
-#include <iostream>
-using namespace std;
+#include "Creature.hpp"
 
-#ifndef PERSONNAGE_H_
-#define PERSONNAGE_H_
+#ifndef PERSONNAGE_HPP_
+#define PERSONNAGE_HPP_
 
-class Ennemi;
-
-class Personnage {
+class Personnage : public Creature {
 private:
-	string nom;
-	int vie_max;
-	int vie;
-	int force;
-	int vitesse;
-	int mana_max;
-	int mana;
-
+    int xp;
+    int xpMax;
+    int niveau;
+    int magieMax;
+    int magie;
+    int argent;
 public:
-	Personnage(string n, int vm , int f, int vi,int mm );
-	virtual ~Personnage();
-
-	//actions
-	void virtual attaquer(Ennemi* cible);
-
-	//getters
-	int get_vie_max();
-	int get_vie();
-	int get_force();
-	int get_vitesse();
-	int get_mana();
-	int get_mana_max();
-	string get_nom();
-
-	//setters
-	void set_vie_max(int new_vie);
-	void set_vie(int new_vie);
-	void set_force(int new_force);
-	void set_vitesse(int new_vitesse);
-	void set_mana(int new_mana);
-	void set_mana_max(int new_mana);
-	void set_nom(string new_nom);
-
-
+    Personnage(string nom, char abbreviation, int vieMax, int force, int magieMax);
+    int getXp() const;
+    int getXpMax() const;
+    int getNiveau() const;
+    int getMagieMax() const;
+    int getMagie() const;
+    int getArgent() const;
+    void setArgent(int nouveauArgent);
+    void setXp(int nouvelXp);
+    void setXpMax(int nouvelXpMax);
+    void setNiveau(int nouveauNiveau);
+    void setMagieMax(int nouvelleMagieMax);
+    void setMagie(int nouvelleMagie);
+    bool taper(Creature& cible);
+    string fullDescription() const;
 };
 
-#endif /* PERSONNAGE_H_ */
+#endif /* PERSONNAGE_HPP_ */
