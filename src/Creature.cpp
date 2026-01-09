@@ -1,9 +1,11 @@
 #include "Creature.hpp"
 
-Creature::Creature(string nom,char abbreviation, int vieMax, int force) : Element(nom, abbreviation) {
+Creature::Creature(string nom,char abbreviation, int vieMax, int force, int argent, int xp) : Element(nom, abbreviation) {
     this->vieMax = vieMax;
     this->vie = vieMax;
     this->force = force;
+    this->xp = xp;
+    this->argent = argent;
 }
 
 int Creature::getVieMax() const {
@@ -18,6 +20,15 @@ int Creature::getForce() const {
     return this->force;
 }
 
+int Creature::getXp() const {
+    return this->xp;
+}
+
+
+int Creature::getArgent() const {
+    return this->argent;
+}
+
 void Creature::setVie(int nouvelleVie) {
     this->vie = nouvelleVie;
 }
@@ -28,6 +39,14 @@ void Creature::setVieMax(int nouvelleVieMax) {
 
 void Creature::setForce(int nouvelleForce) {
     this->force = nouvelleForce;
+}
+
+void Creature::setXp(int nouvelXp) {
+    this->xp = nouvelXp;
+}
+
+void Creature::setArgent(int nouvelArgent) {
+    this->argent = nouvelArgent;
 }
 
 bool Creature::taper(Creature* cible) const {
@@ -42,5 +61,5 @@ bool Creature::taper(Creature* cible) const {
 }
 
 string Creature::fullDescription() const {
-    return "<" + this->getNom() + "> (Vie: " + to_string(this->vie) + "/" + to_string(this->vieMax) + ", Force: " + to_string(this->force) + ")";
+    return "<" + std::string(this->getNom()) + "> (Vie: " + to_string(this->vie) + "/" + to_string(this->vieMax) + ", Force: " + to_string(this->force) + ")";
 }

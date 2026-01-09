@@ -5,12 +5,10 @@
 
 class Personnage : public Creature {
 private:
-    int xp;
     int xpMax;
     int niveau;
     int magieMax;
     int magie;
-    int argent;
 public:
     Personnage(string nom, char abbreviation, int vieMax, int force, int magieMax);
     int getXp() const;
