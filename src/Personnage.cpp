@@ -58,12 +58,12 @@ void Personnage::setMagieMax(int nouvelleMagieMax) {
     this->magieMax = nouvelleMagieMax;
 }
 
-bool Personnage::taper(Creature& cible) {
+bool Personnage::taper(Creature* cible) {
     // Utilise la méthode taper de la classe Creature
     bool cibleVaincue = Creature::taper(cible);
     if (cibleVaincue) {
         // Gagne de l'XP en fonction du niveau de la créature vaincue
-        this->xp += cible.getVieMax();
+        this->xp += cible->getVieMax();
         // Vérifie si le personnage peut monter de niveau
         if (this->xp >= this->xpMax) {
             this->xp -= this->xpMax;
@@ -77,7 +77,7 @@ bool Personnage::taper(Creature& cible) {
             this->setMagie(this->getMagieMax()); // Restaure la magie au maximum
         }
         // Gagne de l'or
-        this->setArgent(this->getArgent() + static_cast<int>(cible.getVieMax() / 2)); // Partie entière de la moitié de la vie max de la créature
+        this->setArgent(this->getArgent() + static_cast<int>(cible->getVieMax() / 2)); // Partie entière de la moitié de la vie max de la créature
     }
     return cibleVaincue;
 }

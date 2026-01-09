@@ -6,6 +6,10 @@ Piece::Piece(Coordonnee c1, Coordonnee c2) {
     this->c2 = c2;
 }
 
+bool Piece::operator==(const Piece& other) const {
+    return (this->c1 == other.c1 && this->c2 == other.c2);
+}
+
 bool Piece::contient(const Coordonnee& c) const {
     return (c.getX() >= c1.getX() && c.getX() <= c2.getX() &&
             c.getY() >= c1.getY() && c.getY() <= c2.getY());

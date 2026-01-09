@@ -9,6 +9,7 @@ private:
     Coordonnee c2;
 public:
     Piece(Coordonnee c1, Coordonnee c2);
+    bool operator==(const Piece& other) const;
     bool contient(const Coordonnee& c) const;
     bool intersection(const Piece& autre) const;
     Coordonnee centre() const;

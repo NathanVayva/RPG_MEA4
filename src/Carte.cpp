@@ -8,16 +8,33 @@ const map<char, Coordonnee> Carte::dir = {
     {'q', Coordonnee(-1, 0)}
 };
 
-Carte::Carte(int size) {
+Carte::Carte(int size, Personnage* hero) {
+    // Initialisation des vecteurs
+    pieces.clear();
+    piecesArelier.clear();
+    elements.clear();
     // Initialisation de la matrice et des pièces
     // Remplie la carte avec des caractères vides pour l'instant
     this->size = size;
     matrice = vector<vector<char>>(size,vector<char>(size, Carte::vide));
-}
+    // Ajouter le héros
+    this->hero = hero;
+    
+    // Ajoute des pièces à la carte
+    this->genererPiece(10);
+    while (this->piecesArelier.size() < 2) {
+        this->genererPiece(1);
+    }
+    this->atteindreToutesPieces();
+    this->placerElement(hero, this->pieces[0].centre());
+    }
 
 Carte::~Carte() {
     // Destructeur
     elements.clear();
+    pieces.clear();
+    piecesArelier.clear();
+    matrice.clear();
 }
 
 void Carte::ajouterPiece(Piece p) {
@@ -141,7 +158,7 @@ bool Carte::contient(const Coordonnee& c) const {
     return (0 <= c.getX() && c.getX() < this->size && 0 <= c.getY() && c.getY() < this->size);
 }
 
-bool Carte::contient(const Element& e) const {
+bool Carte::contient(Element* e) const {
     return this->elements.count(e);
 }
 
@@ -156,20 +173,20 @@ string Carte::afficherCarte() const {
     return s;
 }
 
-void Carte::placerElement(const Element& e, const Coordonnee& c) {
+void Carte::placerElement(Element* e, const Coordonnee& c) {
     if (this->contient(c) ) {
         if (this->matrice[c.getY()][c.getX()] != Carte::sol) {
             throw invalid_argument("Cette case contient déjà un élément");
         }
         if (this->elements.count(e)) {
             throw invalid_argument("Element déjà présent sur la carte");
-        this->matrice[c.getY()][c.getX()] = e.getAbbreviation();
+        this->matrice[c.getY()][c.getX()] = e->getAbbreviation();
         this->elements[e] = c; // Ajoute l'élément à la carte
         }
     }
 }
 
-optional<Element> Carte::getElementAt(const Coordonnee& c) const {
+optional<Element*> Carte::getElementAt(const Coordonnee& c) const {
     if (!this->contient(c)) {
         throw out_of_range("Coordonnée hors de la carte");
     }
@@ -179,14 +196,28 @@ optional<Element> Carte::getElementAt(const Coordonnee& c) const {
     }
     else {
         for (const auto& pair : this->elements) {
-            if (pair.first.getAbbreviation() == abbr) {
+            if (pair.first->getAbbreviation() == abbr) {
                 return pair.first; // Retourne l'élément trouvé
             }
         } 
     }
+    return nullopt; // Pas d'élément trouvé (devrait pas arriver)
 }
 
-Coordonnee Carte::getPosition(const Element& e) const {
+optional<Creature*> Carte::getCreatureAt(const Coordonnee& c) const {
+    optional<Element*> elemOpt = this->getElementAt(c);
+    if (elemOpt) {
+        Element* elem = *elemOpt;
+        // Utilisation de dynamic_cast pour vérifier si l'élément est une créature
+        Creature* creaturePtr = dynamic_cast<Creature*>(elem);
+        if (creaturePtr) {
+            return creaturePtr; // Retourne la créature trouvée
+        }
+    }
+    return nullopt; // Pas de créature à cette position
+}
+
+Coordonnee Carte::getPosition(Element* e) const {
     auto it = this->elements.find(e);
     if (it != this->elements.end()) {
         return it->second; // Retourne la coordonnée associée à l'élément
@@ -196,9 +227,9 @@ Coordonnee Carte::getPosition(const Element& e) const {
 }
 
 void Carte::enleverElement(const Coordonnee& c) {
-    optional<Element> elemOpt = this->getElementAt(c);
+    optional<Element*> elemOpt = this->getElementAt(c);
     if (elemOpt) {
-        Element elem = *elemOpt;
+        Element* elem = *elemOpt;
         this->elements.erase(elem); // Supprime l'élément de la carte
         this->matrice[c.getY()][c.getX()] = Carte::sol; // Remet la case à sol
     } else {
@@ -206,29 +237,54 @@ void Carte::enleverElement(const Coordonnee& c) {
     }
 }
 
-void Carte::deplacement(const Element& e, const Coordonnee& direction) {
-    Coordonnee nouvellePos = this->getPosition(e) + direction;
+void Carte::deplacement(Creature* c, const Coordonnee& direction) {
+    Coordonnee nouvellePos = this->getPosition(c) + direction;
     if (!this->contient(nouvellePos)) {
         throw out_of_range("Nouvelle position hors de la carte");
     }
     if (this->matrice[nouvellePos.getY()][nouvellePos.getX()] != Carte::sol) {
-        // Prevoir d'ajouter la fonction combat
-        throw invalid_argument("La nouvelle position est déjà occupée");
+        optional<Creature*> autre = this->getCreatureAt(nouvellePos);
+        if (autre) {
+            // Il y a une créature à la nouvelle position
+            // Gerer le combat
+            Creature* autreCreature = *autre;
+            bool mort = c->taper(autreCreature);
+            // Gérer la mort de la créature si sa vie est à 0
+            if (mort) {
+                this->enleverElement(nouvellePos);
+            }
+        }
     }
-    Coordonnee anciennePos = this->getPosition(e);
+    Coordonnee anciennePos = this->getPosition(c);
     // Met à jour la matrice
     this->matrice[anciennePos.getY()][anciennePos.getX()] = Carte::sol;
-    this->matrice[nouvellePos.getY()][nouvellePos.getX()] = e.getAbbreviation();
+    this->matrice[nouvellePos.getY()][nouvellePos.getX()] = c->getAbbreviation();
     // Met à jour la position dans la map
-    this->elements[e] = nouvellePos;
+    this->elements[c] = nouvellePos;
 }
 
 void Carte::deplacerTousLesMonstres() {
     // Déplace tous les monstres qui ont d'une distance de moins de 6 cases de l'élément joueur
     for (const auto& pair : this->elements) {
-        const Element& e = pair.first;
-        Coordonnee posActuelle = pair.second;
-        // Génère une direction aléatoire parmi les directions possibles
+        Element* e = pair.first; // L'élément
+        Coordonnee posActuelle = pair.second; // Sa position
         // if distance hero < 6 
+        Coordonnee h = this->getPosition(this->hero);
+        if (posActuelle.distance(h) < 6) {
+            // Calcule la direction vers le héros
+            Coordonnee d = posActuelle.direction(h);
+            d = d + posActuelle;
+            // Vérifie si la nouvelle position est valide
+            if (this->contient(d)) {
+                try {
+                    Creature* c = dynamic_cast<Creature*>(e); // Vérifie si l'élément est une créature
+                    this->deplacement(c, d - posActuelle); // Déplace la créature vers la nouvelle position ou se bat si occupée
+                } catch (const bad_cast&) {
+                    // La position est occupée par autre chose qu'une créature
+                }
+            }
+            
+        }
+
     }
 }

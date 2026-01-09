@@ -25,7 +25,7 @@ public:
     void setNiveau(int nouveauNiveau);
     void setMagieMax(int nouvelleMagieMax);
     void setMagie(int nouvelleMagie);
-    bool taper(Creature& cible);
+    bool taper(Creature* cible);
     string fullDescription() const;
 };
 

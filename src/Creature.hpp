@@ -16,7 +16,7 @@ public:
     void setVie(int nouvelleVie);
     void setVieMax(int nouvelleVieMax);
     void setForce(int nouvelleForce);
-    bool taper(Creature& cible) const;
+    bool taper(Creature* cible) const;
     string fullDescription() const;
 };
 

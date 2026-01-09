@@ -1,5 +1,6 @@
 #include "Piece.hpp"
 #include "Element.hpp"
+#include "Personnage.hpp"
 #include <iostream>
 #include <string_view>
 #include <random>
@@ -19,11 +20,12 @@ private:
     vector<vector<char>> matrice;
     vector<Piece> pieces;
     vector<Piece> piecesArelier;
-    map<Element, Coordonnee> elements;
+    map<Element*, Coordonnee> elements;
     int size;
+    Personnage* hero; // Pointeur vers le personnage principal
 public:
-    Carte(int size);
-    ~Carte();
+    Carte(int size, Personnage* hero); // Ajouter le héros au constructeur
+    virtual ~Carte();
     static constexpr char sol = '.';
     static constexpr char vide = ' ';
     static const map<char, Coordonnee> dir;  // déclaration, définition après
@@ -37,13 +39,14 @@ public:
     Piece randomPiece() const;
     void genererPiece(int nbPieces);
     bool contient(const Coordonnee& c) const;
-    bool contient(const Element& e) const;
+    bool contient(Element* e) const;
     string afficherCarte() const;
-    void placerElement(const Element& e, const Coordonnee& c);
-    optional<Element> getElementAt(const Coordonnee& c) const;
-    Coordonnee getPosition(const Element& e) const;
+    void placerElement(Element* e, const Coordonnee& c);
+    optional<Element*> getElementAt(const Coordonnee& c) const;
+    optional<Creature*> getCreatureAt(const Coordonnee& c) const;
+    Coordonnee getPosition(Element* e) const;
     void enleverElement(const Coordonnee& c);
-    void deplacement(const Element& e, const Coordonnee& direction);
+    void deplacement(Creature* c, const Coordonnee& direction);
     void deplacerTousLesMonstres();
 };
 

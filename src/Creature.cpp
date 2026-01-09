@@ -30,10 +30,10 @@ void Creature::setForce(int nouvelleForce) {
     this->force = nouvelleForce;
 }
 
-bool Creature::taper(Creature& cible) const {
+bool Creature::taper(Creature* cible) const {
     // Inflige des dégâts à la cible et retourne true si la cible est vaincue, faux sinon.
-    cible.setVie(cible.getVie() - this->force);
-    if (cible.getVie() <= 0) {
+    cible->setVie(cible->getVie() - this->force);
+    if (cible->getVie() <= 0) {
         return true; // La cible est vaincue
     }
     else {
