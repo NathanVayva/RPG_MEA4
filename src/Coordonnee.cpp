@@ -34,9 +34,9 @@ Coordonnee Coordonnee::direction(const Coordonnee& autre) const {
     } else if (cos < -(1/sqrt(2))) {
         return Coordonnee(1, 0); // Droite
     } else if (d.y > 0) {
-        return Coordonnee(0, -1); // Bas
+        return Coordonnee(0, 1); // Bas
     } else {
-        return Coordonnee(0, 1); // Haut
+        return Coordonnee(0, -1); // Haut
     }
 }
 
