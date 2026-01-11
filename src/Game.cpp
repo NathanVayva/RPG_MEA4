@@ -30,9 +30,13 @@ Game::Game(Personnage* hero) : carte(20, hero) {
 
     actions['i'] = [this](Personnage& hero) {
         // Affichage fullDescription du personnage
-
+        this->ajouterMessage(this->hero->fullDescription());
     };
 
+    actions['k'] = [this](Personnage& hero) {
+        // Arrête le jeu
+        this->hero->setVie(0);
+    };
 }
 
 Game::~Game() {
@@ -93,10 +97,11 @@ Creature Game::randMonstre() const {
 }
 
 void Game::jouer() {
-    cout << "Bienvenue héros !" << endl;
+    cout << "Bienvenue " << this->hero->getNom() << " !" << endl;
     while (this->hero->getVie() > 0) {
-        this->carte.afficherCarte();
+         cout << this->carte.afficherCarte() << endl;
         this->hero->description();
+        this->lireMessages();
         char c = _getch(); // Utilisation de _getch() pour capturer la touche appuyée sans appuyer sur Entrée
         while (this->actions.count(c) == 0) {
             c = _getch(); // Attendre une touche valide
@@ -107,5 +112,5 @@ void Game::jouer() {
         // Bouger tous les monstres vers le héros
         this->carte.deplacerTousLesMonstres();
     }
-    cout << "Vous êtes mort. Game Over." << endl;
+    cout << "Vous etes mort. Game Over." << endl;
 }

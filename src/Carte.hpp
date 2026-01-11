@@ -30,6 +30,7 @@ public:
     static constexpr char vide = ' ';
     static const map<char, Coordonnee> dir;  // déclaration, définition après
     void ajouterPiece(Piece p);
+    optional<Piece> getPieceAt(const Coordonnee& c) const;
     optional<Piece> trouverPiece(const Coordonnee& c) const;
     bool pasIntersection(const Piece& p) const;
     void creuser(const Coordonnee& c);
@@ -37,6 +38,7 @@ public:
     void atteindre();
     void atteindreToutesPieces();
     Piece randomPiece() const;
+    Piece randomPieceExistante() const;
     void genererPiece(int nbPieces);
     bool contient(const Coordonnee& c) const;
     bool contient(Element* e) const;
