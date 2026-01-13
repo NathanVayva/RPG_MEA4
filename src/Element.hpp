@@ -9,14 +9,11 @@ class Element {
 private:
     string nom;
     char abbreviation;
-    int niveau;
 public:
     Element(string nom, char abbreviation);
     virtual ~Element() = default;
-    string getNom() const;
-    char getAbbreviation() const;
-    int getNiveau() const;
-    string description() const;
+    string getNom();
+    char getAbbreviation();
 };
 
 #endif /* ELEMENT_HPP_ */

@@ -5,18 +5,10 @@ Element::Element(string nom, char abbreviation) {
     this->abbreviation = abbreviation;
 }
 
-string Element::getNom() const {
+string Element::getNom() {
     return this->nom;
 }
 
-char Element::getAbbreviation() const {
+char Element::getAbbreviation() {
     return this->abbreviation;
-}
-
-int Element::getNiveau() const {
-    return this->niveau;
-}
-
-string Element::description() const {
-    return "<" + this->getNom() + ">";
 }
