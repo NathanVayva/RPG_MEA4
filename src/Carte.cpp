@@ -31,6 +31,9 @@ Carte::Carte(int size, Personnage* hero) {
 
 Carte::~Carte() {
     // Destructeur
+    for (auto& [e, c] : elements) {
+        delete e;
+    }
     elements.clear();
     pieces.clear();
     piecesArelier.clear();
@@ -244,10 +247,29 @@ Coordonnee Carte::getPosition(Element* e) const {
     }
 }
 
+Coordonnee Carte::getCoordLibre() const {
+    // Génération aléatoire
+    random_device rd;
+    mt19937 gen(rd());
+    uniform_int_distribution<> dist(0, this->size - 1);
+
+    while (true) {
+        // Coordonnée aléatoire
+        int x = dist(gen);
+        int y = dist(gen);
+        Coordonnee c(x, y);
+        // Vérification libre
+        if (this->contient(c) && this->matrice[y][x] == Carte::sol) {
+            return c; // sortie du while
+        }
+    }
+}
+
 void Carte::enleverElement(const Coordonnee& c) {
     optional<Element*> elemOpt = this->getElementAt(c);
     if (elemOpt) {
         Element* elem = *elemOpt;
+        delete(elem); // Appelle le destructeur de la classe
         this->elements.erase(elem); // Supprime l'élément de la carte
         this->matrice[c.getY()][c.getX()] = Carte::sol; // Remet la case à sol
     } else {
@@ -256,11 +278,12 @@ void Carte::enleverElement(const Coordonnee& c) {
 }
 
 void Carte::deplacement(Creature* c, const Coordonnee& direction) {
-    Coordonnee nouvellePos = this->getPosition(c) + direction;
+    Coordonnee anciennePos = this->getPosition(c);
+    Coordonnee nouvellePos = anciennePos + direction;
     if (!this->contient(nouvellePos)) {
         return; // Nouvelle position hors de la carte
     }
-    if (this->matrice[nouvellePos.getY()][nouvellePos.getX()] != Carte::sol) {
+    else if (this->matrice[nouvellePos.getY()][nouvellePos.getX()] != Carte::sol) {
         optional<Creature*> autre = this->getCreatureAt(nouvellePos);
         if (autre) {
             // Il y a une créature à la nouvelle position
@@ -272,14 +295,29 @@ void Carte::deplacement(Creature* c, const Coordonnee& direction) {
                 this->enleverElement(nouvellePos);
             }
         }
+        optional<Element*> autreElem = this->getElementAt(nouvellePos);
+        if (autreElem) {
+            // Il y a un élément non-créature à la nouvelle position
+            if (dynamic_cast<Coffre*>(*autreElem)) {
+                // Gérer l'ouverture du coffre
+                Coffre* coffre = dynamic_cast<Coffre*>(*autreElem);
+                if (coffre->isOuvert() == false) {
+                    Equipement* equipement = coffre->ouvrir();
+                    // Ici, on ajoute l'équipement au personnage
+                }
+                else {
+                    // Le coffre est déjà ouvert
+
+                }
+            }
+        }
     }
-    if (this->getPieceAt(nouvellePos) != nullopt) { // Coordonnée dans une pièce de la carte
-        Coordonnee anciennePos = this->getPosition(c);
+    else if (this->matrice[nouvellePos.getY()][nouvellePos.getX()] == Carte::sol) { // Coordonnée dans une pièce de la carte
         // Met à jour la matrice
         this->matrice[anciennePos.getY()][anciennePos.getX()] = Carte::sol;
         this->matrice[nouvellePos.getY()][nouvellePos.getX()] = c->getAbbreviation();
         // Met à jour la position dans la map
-        this->elements[c] = nouvellePos;
+        this->elements.at(c) = nouvellePos;
     }
 }
 

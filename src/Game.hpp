@@ -4,6 +4,7 @@
 #include "Consommables.hpp"
 #include "Coffre.hpp"
 #include "Personnage.hpp"
+#include "ChauveSouris.hpp"
 #include <functional>
 #include <conio.h>
 #include <random>
@@ -24,11 +25,12 @@ public:
     Game(Personnage* hero);
     virtual ~Game();
     void creerCarte();
+    void decorerCarte();
     void ajouterMessage(const string& message);
-    void lireMessages() const;
+    void lireMessages();
     Equipement randEquipement() const;
     void placerCoffreAleatoire();
-    Creature randMonstre() const;
+    Creature* randMonstre() const;
     void jouer();
 };
 

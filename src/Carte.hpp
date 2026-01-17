@@ -1,6 +1,7 @@
 #include "Piece.hpp"
 #include "Element.hpp"
 #include "Personnage.hpp"
+#include "Coffre.hpp"
 #include <iostream>
 #include <string_view>
 #include <random>
@@ -47,6 +48,7 @@ public:
     optional<Element*> getElementAt(const Coordonnee& c) const;
     optional<Creature*> getCreatureAt(const Coordonnee& c) const;
     Coordonnee getPosition(Element* e) const;
+    Coordonnee getCoordLibre() const;
     void enleverElement(const Coordonnee& c);
     void deplacement(Creature* c, const Coordonnee& direction);
     void deplacerTousLesMonstres();
