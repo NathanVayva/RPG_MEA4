@@ -1,14 +1,14 @@
 #include "Element.hpp"
 
-Element::Element(string nom, char abbreviation) {
+Element::Element(string nom, string abbreviation) {
     this->nom = nom;
     this->abbreviation = abbreviation;
 }
 
-string Element::getNom() {
+string Element::getNom() const{
     return this->nom;
 }
 
-char Element::getAbbreviation() {
+string Element::getAbbreviation() const{
     return this->abbreviation;
 }

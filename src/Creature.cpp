@@ -1,16 +1,11 @@
 #include "Creature.hpp"
 
-Creature::Creature(string nom,char abbreviation, int id, int vieMax, int force, int argent, int xp) : Element(nom, abbreviation) {
-    this->id = id;
+Creature::Creature(string nom,string abbreviation, int vieMax, int force, int xp, int argent) : Element(nom, abbreviation) {
     this->vieMax = vieMax;
     this->vie = vieMax;
     this->force = force;
     this->xp = xp;
     this->argent = argent;
-}
-
-Creature::~Creature() {
-    cout << "<"  << this->getNom() << "> a ete vaincu" << endl;
 }
 
 int Creature::getVieMax() const {
@@ -34,6 +29,14 @@ int Creature::getArgent() const {
     return this->argent;
 }
 
+Armes Creature::getArme() const {
+	return this->arme;
+}
+
+Armures Creature::getArmure() const {
+	return this->armure;
+}
+
 void Creature::setVie(int nouvelleVie) {
     this->vie = nouvelleVie;
 }
@@ -54,21 +57,27 @@ void Creature::setArgent(int nouvelArgent) {
     this->argent = nouvelArgent;
 }
 
-bool Creature::taper(Creature* cible) {
+void Creature::setArme(Armes nouvelleArme) {
+	this->arme = nouvelleArme;
+}
+
+void Creature::setArmure(Armures nouvelleArmure) {
+	this->armure = nouvelleArmure;
+}
+
+
+
+
+
+bool Creature::taper(Creature* cible) const {
     // Inflige des dégâts à la cible et retourne true si la cible est vaincue, faux sinon.
-    cible->setVie(cible->getVie() - this->force);
-    // Affichage pour joueur
-    cout << this->description() << " attaque " << cible->description() << endl;
+    cible->setVie(cible->getVie() - max( 0, (this->force + this->arme.getDegats()) - cible->getArmure().getRes_physique()));
     if (cible->getVie() <= 0) {
         return true; // La cible est vaincue
     }
     else {
         return false; // La cible est toujours en vie
     }
-}
-
-string Creature::description() const {
-    return "<" + this->getNom() + "> (Vie: " + to_string(this->vie) + "/" + to_string(this->vieMax) + ")";
 }
 
 string Creature::fullDescription() const {

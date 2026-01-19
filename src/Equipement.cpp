@@ -7,7 +7,7 @@
 
 #include "Equipement.hpp"
 
-Equipement::Equipement(string nom, char abbreviation, int prix) : Element(nom, abbreviation) {
+Equipement::Equipement(string nom, string abbreviation, int prix) : Element(nom, abbreviation) {
 	this->prix = prix;
 }
 

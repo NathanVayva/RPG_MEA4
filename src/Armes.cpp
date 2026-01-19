@@ -7,15 +7,15 @@
 
 #include "Armes.hpp"
 
-Armes::Armes(string nom, char abbreviation, int prix, int degats, int magie) : Equipement(nom, abbreviation, prix) {
+Armes::Armes(string nom, string abbreviation, int prix, int degats, int magie) : Equipement(nom, abbreviation, prix) {
 	this->degats = degats;
 	this->magie = magie;
 }
 
-int Armes::getDegats() {
+int Armes::getDegats() const {
 	return this->degats;
 }
 
-int Armes::getMagie() {
+int Armes::getMagie() const {
 	return this->magie;
 }

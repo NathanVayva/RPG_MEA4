@@ -8,15 +8,20 @@ const map<char, Coordonnee> Carte::dir = {
     {'q', Coordonnee(-1, 0)}
 };
 
+const std::string Carte::sol = "░░ ";
+const std::string Carte::vide = "   ";
+
+
 Carte::Carte(int size, Personnage* hero) {
     // Initialisation des vecteurs
     pieces.clear();
     piecesArelier.clear();
     elements.clear();
+
     // Initialisation de la matrice et des pièces
     // Remplie la carte avec des caractères vides pour l'instant
     this->size = size;
-    matrice = vector<vector<char>>(size,vector<char>(size, Carte::vide));
+    matrice = vector<vector<string>>(size,vector<string>(size, Carte::vide));
     // Ajouter le héros
     this->hero = hero;
     
@@ -31,9 +36,6 @@ Carte::Carte(int size, Personnage* hero) {
 
 Carte::~Carte() {
     // Destructeur
-    for (auto& [e, c] : elements) {
-        delete e;
-    }
     elements.clear();
     pieces.clear();
     piecesArelier.clear();
@@ -186,7 +188,7 @@ bool Carte::contient(Element* e) const {
 string Carte::afficherCarte() const {
     string s = "";
     for (const auto& row : this->matrice) {
-        for (char c : row) {
+        for (string c : row) {
             s += c; // char à string
         }
         s += '\n';
@@ -211,7 +213,7 @@ optional<Element*> Carte::getElementAt(const Coordonnee& c) const {
     if (!this->contient(c)) {
         throw out_of_range("Coordonnée hors de la carte");
     }
-    char abbr = this->matrice[c.getY()][c.getX()];
+    string abbr = this->matrice[c.getY()][c.getX()];
     if (abbr == Carte::sol) {
         return nullopt; // Pas d'élément à cette position
     }
@@ -247,29 +249,10 @@ Coordonnee Carte::getPosition(Element* e) const {
     }
 }
 
-Coordonnee Carte::getCoordLibre() const {
-    // Génération aléatoire
-    random_device rd;
-    mt19937 gen(rd());
-    uniform_int_distribution<> dist(0, this->size - 1);
-
-    while (true) {
-        // Coordonnée aléatoire
-        int x = dist(gen);
-        int y = dist(gen);
-        Coordonnee c(x, y);
-        // Vérification libre
-        if (this->contient(c) && this->matrice[y][x] == Carte::sol) {
-            return c; // sortie du while
-        }
-    }
-}
-
 void Carte::enleverElement(const Coordonnee& c) {
     optional<Element*> elemOpt = this->getElementAt(c);
     if (elemOpt) {
         Element* elem = *elemOpt;
-        delete(elem); // Appelle le destructeur de la classe
         this->elements.erase(elem); // Supprime l'élément de la carte
         this->matrice[c.getY()][c.getX()] = Carte::sol; // Remet la case à sol
     } else {
@@ -278,12 +261,11 @@ void Carte::enleverElement(const Coordonnee& c) {
 }
 
 void Carte::deplacement(Creature* c, const Coordonnee& direction) {
-    Coordonnee anciennePos = this->getPosition(c);
-    Coordonnee nouvellePos = anciennePos + direction;
+    Coordonnee nouvellePos = this->getPosition(c) + direction;
     if (!this->contient(nouvellePos)) {
         return; // Nouvelle position hors de la carte
     }
-    else if (this->matrice[nouvellePos.getY()][nouvellePos.getX()] != Carte::sol) {
+    if (this->matrice[nouvellePos.getY()][nouvellePos.getX()] != Carte::sol) {
         optional<Creature*> autre = this->getCreatureAt(nouvellePos);
         if (autre) {
             // Il y a une créature à la nouvelle position
@@ -295,29 +277,14 @@ void Carte::deplacement(Creature* c, const Coordonnee& direction) {
                 this->enleverElement(nouvellePos);
             }
         }
-        optional<Element*> autreElem = this->getElementAt(nouvellePos);
-        if (autreElem) {
-            // Il y a un élément non-créature à la nouvelle position
-            if (dynamic_cast<Coffre*>(*autreElem)) {
-                // Gérer l'ouverture du coffre
-                Coffre* coffre = dynamic_cast<Coffre*>(*autreElem);
-                if (coffre->isOuvert() == false) {
-                    Equipement* equipement = coffre->ouvrir();
-                    // Ici, on ajoute l'équipement au personnage
-                }
-                else {
-                    // Le coffre est déjà ouvert
-
-                }
-            }
-        }
     }
-    else if (this->matrice[nouvellePos.getY()][nouvellePos.getX()] == Carte::sol) { // Coordonnée dans une pièce de la carte
+    if (this->getPieceAt(nouvellePos) != nullopt) { // Coordonnée dans une pièce de la carte
+        Coordonnee anciennePos = this->getPosition(c);
         // Met à jour la matrice
         this->matrice[anciennePos.getY()][anciennePos.getX()] = Carte::sol;
         this->matrice[nouvellePos.getY()][nouvellePos.getX()] = c->getAbbreviation();
         // Met à jour la position dans la map
-        this->elements.at(c) = nouvellePos;
+        this->elements[c] = nouvellePos;
     }
 }
 

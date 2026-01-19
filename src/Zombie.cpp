@@ -2,7 +2,7 @@
 #include <random>
 
 Zombie::Zombie(string nom, int vieMax, int force, int xp, int argent)
-    : Creature(nom, '🧟‍♂️', vieMax, force, xp, argent) {
+    : Creature(nom, "🧟‍♂️", vieMax, force, xp, argent) {
 }
 
 
@@ -22,7 +22,7 @@ bool Zombie::mordre(Creature* cible) {
         degatInfection = 5; // Dégâts d'infection
     }
 
-    cible->setVie(cible->getVie() - this->getForce() + degatInfection);
+    cible->setVie(cible->getVie() - max( 0, (this->getForce() + this->getArme().getDegats()) - cible->getArmure().getRes_physique()) + degatInfection);
 
     if (cible->getVie() <= 0) {
         return true; // La cible est vaincue

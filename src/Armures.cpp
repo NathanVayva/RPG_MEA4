@@ -7,7 +7,7 @@
 
 #include "Armures.hpp"
 
-Armures::Armures(string nom, char abbreviation, int prix, int res_phy, int res_mag) : Equipement(nom, abbreviation, prix) {
+Armures::Armures(string nom, string abbreviation, int prix, int res_phy, int res_mag) : Equipement(nom, abbreviation, prix) {
 	this->resistance_physique = res_phy;
 	this->resistance_magique = res_mag;
 }

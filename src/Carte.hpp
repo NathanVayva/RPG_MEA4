@@ -18,18 +18,34 @@ using namespace std;
 
 class Carte {
 private:
+    int ennemisRestants;
     vector<vector<char>> matrice;
     vector<Piece> pieces;
     vector<Piece> piecesArelier;
     map<Element*, Coordonnee> elements;
+    map<Coordonnee, Element*> elementsParCoord;
     int size;
     Personnage* hero; // Pointeur vers le personnage principal
 public:
     Carte(int size, Personnage* hero); // Ajouter le héros au constructeur
     virtual ~Carte();
+    // Déclaration des char pour la map
     static constexpr char sol = '.';
     static constexpr char vide = ' ';
+    // Déclaration map
     static const map<char, Coordonnee> dir;  // déclaration, définition après
+    // get/set
+    int getEnnemisRestants() const;
+    void setEnnemisRestants(int nb);
+    optional<Element*> getElementAt(const Coordonnee& c) const;
+    optional<Creature*> getCreatureAt(const Coordonnee& c) const;
+    optional<Coordonnee> getPosition(Element* e) const;
+    Coordonnee getCoordLibre() const;
+    vector<Piece> getPiecesArelier() const;
+    vector<Piece> getPieces() const;
+    void clearPieces();
+    void clearMatrice();
+    // fonctions
     void ajouterPiece(Piece p);
     optional<Piece> getPieceAt(const Coordonnee& c) const;
     optional<Piece> trouverPiece(const Coordonnee& c) const;
@@ -45,10 +61,6 @@ public:
     bool contient(Element* e) const;
     string afficherCarte() const;
     void placerElement(Element* e, const Coordonnee& c);
-    optional<Element*> getElementAt(const Coordonnee& c) const;
-    optional<Creature*> getCreatureAt(const Coordonnee& c) const;
-    Coordonnee getPosition(Element* e) const;
-    Coordonnee getCoordLibre() const;
     void enleverElement(const Coordonnee& c);
     void deplacement(Creature* c, const Coordonnee& direction);
     void deplacerTousLesMonstres();

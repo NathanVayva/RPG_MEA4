@@ -7,7 +7,7 @@
 
 #include "Consommables.hpp"
 
-Consommables::Consommables(string nom, char abbreviation, int prix, int vie, int degats, int mana, int resistance_magique, int resistance_physique) :
+Consommables::Consommables(string nom, string abbreviation, int prix, int vie, int degats, int mana, int resistance_magique, int resistance_physique) :
 Equipement(nom, abbreviation, prix) {
 	this->vie = vie;
 	this->degats = degats;
@@ -31,5 +31,14 @@ int Consommables::getRes_phys() {
 int Consommables::getVie() {
 	return this->vie;
 }
+
+
+
+
+
+
+
+
+
 
 

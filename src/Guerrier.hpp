@@ -1,11 +1,19 @@
+#ifndef GUERRIER_HPP_
+#define GUERRIER_HPP_
+
 #include "Personnage.hpp"
 
-#ifndef GUERRIER_HPP_
-#define GUERRIER_HPP_  
-
 class Guerrier : public Personnage {
+private:
+    float tauxCritique;   // entre 0 et 1
 public:
-    Guerrier();
+    Guerrier(std::string nom);
+
+    int getBonusForce() const;
+    float getTauxCritique() const;
+
+    bool taper(Creature* cible);
+    std::string fullDescription() const;
 };
 
-#endif /* GUERRIER_HPP_ */
+#endif

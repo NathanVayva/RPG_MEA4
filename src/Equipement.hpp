@@ -13,7 +13,7 @@ class Equipement : public Element {
 private:
 	int prix;
 public:
-	Equipement(string nom, char abbreviation, int prix);
+	Equipement(string nom, string abbreviation, int prix);
 	virtual ~Equipement();
 	int getPrix();
 };

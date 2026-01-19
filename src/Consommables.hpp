@@ -19,7 +19,7 @@ private:
 	int resistance_physique;
 
 public:
-	Consommables(string nom, char abbreviation, int prix, int vie, int degats, int mana, int resistance_magique, int resistance_physique);
+	Consommables(string nom, string abbreviation, int prix, int vie, int degats, int mana, int resistance_magique, int resistance_physique);
 	int getVie();
 	int getDegats();
 	int getMana();

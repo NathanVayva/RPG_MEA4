@@ -1,7 +1,14 @@
 #include "Creature.hpp"
+#include "Consommables.hpp"
+#include "Armes.hpp"
+#include "Armures.hpp"
+
+#include <vector>
 
 #ifndef PERSONNAGE_HPP_
 #define PERSONNAGE_HPP_
+
+
 
 class Personnage : public Creature {
 private:
@@ -9,22 +16,38 @@ private:
     int niveau;
     int magieMax;
     int magie;
+    std::vector<Consommables> inventaire;
 public:
-    Personnage(string nom, char abbreviation, int vieMax, int force, int magieMax);
-    int getXp() const;
+    Personnage(string nom, string abbreviation, int vieMax, int force, int magieMax);
     int getXpMax() const;
     int getNiveau() const;
     int getMagieMax() const;
     int getMagie() const;
-    int getArgent() const;
-    void setArgent(int nouveauArgent);
-    void setXp(int nouvelXp);
+    vector<Consommables> getInventaire() const;
     void setXpMax(int nouvelXpMax);
     void setNiveau(int nouveauNiveau);
     void setMagieMax(int nouvelleMagieMax);
     void setMagie(int nouvelleMagie);
+    void setInventaire(vector<Consommables> nouvelInventaire);
+    void addObjet(const Consommables &c);
+    void afficherInventaire();
+
+
+
+
     bool taper(Creature* cible);
     string fullDescription() const;
+
+    bool utiliserObjet( Creature* cible);
+
+
+
+
+
+
+
+
+
 };
 
 #endif /* PERSONNAGE_HPP_ */

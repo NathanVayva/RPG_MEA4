@@ -15,7 +15,7 @@ private :
 	int resistance_magique;
 
 public:
-	Armures(string nom, char abbreviation, int prix, int resistance_physique, int resistance_magique);
+	Armures(string nom, string abbreviation, int prix, int resistance_physique, int resistance_magique);
 	int getRes_physique();
 	int getRes_magique();
 };

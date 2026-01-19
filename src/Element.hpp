@@ -8,12 +8,12 @@ using namespace std;
 class Element {
 private:
     string nom;
-    char abbreviation;
+    string abbreviation;
 public:
-    Element(string nom, char abbreviation);
+    Element(string nom, string abbreviation);
     virtual ~Element() = default;
-    string getNom();
-    char getAbbreviation();
+    string getNom() const;
+    string getAbbreviation() const;
 };
 
 #endif /* ELEMENT_HPP_ */

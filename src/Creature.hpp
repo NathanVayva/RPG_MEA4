@@ -1,32 +1,37 @@
 #include "Element.hpp"
-#include <iostream>
+#include "Armes.hpp"
+#include "Armures.hpp"
+
 #ifndef CREATURE_HPP_
 #define CREATURE_HPP_
 
 class Creature : public Element {
 private:
-    int id;
     int vieMax;
     int vie;
     int force;
     int xp;
     int argent;
+    Armes arme = Armes("rien","r", 0,0,0);
+    Armures armure = Armures("à poil","ap", 0,0,0);
 public:
-    Creature(string nom,char abbreviation, int id, int vieMax, int force, int xp, int argent );
-    virtual ~Creature();
+    Creature(string nom,string abbreviation, int vieMax, int force, int xp, int argent );
     int getVieMax() const;
     int getVie() const;
     int getForce() const;
     int getXp() const;
     int getArgent() const;
+    Armes getArme() const;
+    Armures getArmure() const;
     void setVie(int nouvelleVie);
     void setVieMax(int nouvelleVieMax);
     void setForce(int nouvelleForce);
     void setXp(int nouvelXp);
     void setArgent(int nouvelArgent);
-    virtual bool taper(Creature* cible);
-    virtual string description() const;
-    virtual string fullDescription() const;
+    void setArme(Armes nouvelleArme);
+    void setArmure(Armures nouvelleArmure);
+    bool taper(Creature* cible) const;
+    string fullDescription() const;
 };
 
 #endif /* CREATURE_HPP_ */

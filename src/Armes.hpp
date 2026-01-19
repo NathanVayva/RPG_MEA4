@@ -15,9 +15,9 @@ private:
 	int degats;
 	int magie;
 public:
-	Armes(string nom, char abbreviation, int prix, int degats,int magie);
-	int getDegats();
-	int getMagie();
+	Armes(string nom, string abbreviation, int prix, int degats,int magie);
+	int getDegats() const;
+	int getMagie() const;
 };
 
 #endif /* ARMES_HPP_ */
