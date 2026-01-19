@@ -13,9 +13,12 @@ private:
 public:
     Coordonnee();
     Coordonnee(int x, int y);
+    virtual ~Coordonnee() = default;
     bool operator==(const Coordonnee& autre) const;
     Coordonnee operator+(const Coordonnee& autre) const;
     Coordonnee operator-(const Coordonnee& autre) const;
+    bool operator<(const Coordonnee& other) const;
+    bool operator>(const Coordonnee& other) const;
     float distance(const Coordonnee& autre) const;
     Coordonnee direction(const Coordonnee& autre) const;
     int getX() const;

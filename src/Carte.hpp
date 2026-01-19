@@ -19,7 +19,7 @@ using namespace std;
 class Carte {
 private:
     int ennemisRestants;
-    vector<vector<char>> matrice;
+    vector<vector<string>> matrice;
     vector<Piece> pieces;
     vector<Piece> piecesArelier;
     map<Element*, Coordonnee> elements;
@@ -30,8 +30,8 @@ public:
     Carte(int size, Personnage* hero); // Ajouter le héros au constructeur
     virtual ~Carte();
     // Déclaration des char pour la map
-    static constexpr char sol = '.';
-    static constexpr char vide = ' ';
+    static constexpr string sol = "░░ ";
+    static constexpr string vide = "   ";
     // Déclaration map
     static const map<char, Coordonnee> dir;  // déclaration, définition après
     // get/set

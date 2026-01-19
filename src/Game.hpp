@@ -2,7 +2,7 @@
 #include "Armes.hpp"
 #include "Armures.hpp"
 #include "Consommables.hpp"
-//#include "Coffre.hpp"
+#include "Coffre.hpp"
 #include "Personnage.hpp"
 #include <functional>
 //#include <conio.h>
