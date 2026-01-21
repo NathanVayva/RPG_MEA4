@@ -42,6 +42,10 @@ Carte::~Carte() {
     matrice.clear();
 }
 
+int Carte::getSize() const {
+    return this->size;
+}
+
 int Carte::getEnnemisRestants() const {
     return this->ennemisRestants;
 }
@@ -245,6 +249,14 @@ optional<Element*> Carte::getElementAt(const Coordonnee& c) const {
         return it->second; // Retourne l'élement à la position c
     }
     return nullopt; // Rien n'est trouvé
+}
+
+bool Carte::isEmptyAt(const Coordonnee& c) const {
+    // Renvoie true si la case est vide à la coord c (pas de sol ni de monstre ni rien d'autre)
+    if (!this->contient(c)) {
+        throw out_of_range("Coordonnée hors de la carte");
+    }
+    return this->matrice[c.getY()][c.getX()] == Carte::vide;
 }
 
 optional<Creature*> Carte::getCreatureAt(const Coordonnee& c) const {

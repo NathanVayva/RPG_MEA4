@@ -2,6 +2,7 @@
 #include "Consommables.hpp"
 #include "Armes.hpp"
 #include "Armures.hpp"
+#include <random>
 
 #include <vector>
 
@@ -31,7 +32,7 @@ public:
     void setInventaire(vector<Consommables> nouvelInventaire);
     void addObjet(const Consommables &c);
     void afficherInventaire();
-
+    void magasin(unsigned int seed);
 
 
 

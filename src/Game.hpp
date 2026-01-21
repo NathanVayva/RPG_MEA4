@@ -7,6 +7,8 @@
 #include <functional>
 //#include <conio.h>
 #include <random>
+//#include "utilitaire.hpp"
+#include <ncurses.h>
 
 #ifndef GAME_HPP_
 #define GAME_HPP_

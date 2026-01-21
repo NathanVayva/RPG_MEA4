@@ -35,9 +35,11 @@ public:
     // Déclaration map
     static const map<char, Coordonnee> dir;  // déclaration, définition après
     // get/set
+    int getSize() const;
     int getEnnemisRestants() const;
     void setEnnemisRestants(int nb);
     optional<Element*> getElementAt(const Coordonnee& c) const;
+    bool isEmptyAt(const Coordonnee& c) const;
     optional<Creature*> getCreatureAt(const Coordonnee& c) const;
     optional<Coordonnee> getPosition(Element* e) const;
     Coordonnee getCoordLibre() const;

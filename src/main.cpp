@@ -28,6 +28,8 @@ int main() {
 		{
 		case '1':
 			hero = new Guerrier("Hurl");
+			hero->setArgent(100);
+			hero->addObjet(Consommables("Potion de vie", "pv", 10, 20, 0, 0, 0, 0));
 			break;
 		case '2':
 			// Mage hero = Mage();

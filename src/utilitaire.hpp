@@ -1,5 +1,9 @@
 #include <cmath>
+#include <termios.h>
+#include <unistd.h>
+#include <cstdio>
 
-int sign(int x) {
-    return (x > 0) - (x < 0);
-}
+
+int sign(int x);
+
+char getch();
