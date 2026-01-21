@@ -30,7 +30,7 @@ Game::Game(Personnage* hero) : carte(20, hero) {
 
     actions['i'] = [this](Personnage& hero) {
         // Affichage fullDescription du personnage
-        this->ajouterMessage(this->hero->fullDescription());
+        this->printMessage(this->hero->fullDescription());
     };
 
     actions['k'] = [this](Personnage& hero) {
@@ -67,7 +67,13 @@ void Game::decorerCarte() {
     // Nb monstre aléatoire
     random_device rd;
     mt19937 gen(rd());
-    uniform_int_distribution<> dist(this->niveau, this->niveau + 3);
+    // Correction nb monstres max
+    int max = this->niveau + 3;
+    if (max > this->carte.getMatriceSize() - 2) {
+        // Plus de monstres que de cases libres
+        max = this->carte.getMatriceSize() - 2;
+    }
+    uniform_int_distribution<> dist(this->niveau, max);
     int nbMonstre = dist(gen);
     // Place les monstres à un endroit aléatoire
     for (int i=0; i < nbMonstre; i++) {
@@ -83,15 +89,8 @@ void Game::creerCarte() {
     this->niveau += 1;
 }
 
-void Game::ajouterMessage(const string& message) {
-    this->messages.push_back(message);
-}
-
-void Game::lireMessages() {
-    for (const string& message : this->messages) {
-        cout << message << endl;
-    }
-    this->messages.clear();
+void Game::printMessage(string message) const {
+    cout << message << endl;
 }
 
 Equipement Game::randEquipement() const {
@@ -128,6 +127,19 @@ Creature* Game::randMonstre() const {
     return new Creature(*monstres[index]); // Retourne une copie
 }
 
+bool Game::tour() {
+    bool tourFini = false;
+    char c = _getch();
+    while (this->actions.count(c) == 0) {
+        c = _getch();
+    }
+    if (c == 'z' || c == 'q' || c == 'd' || c == 's' || c == 'k') {
+        tourFini = true;
+    }
+    this->actions[c](*this->hero); // Exécuter l'action associée
+    return tourFini;
+}
+
 void Game::jouer() {
     this->placerCoffreAleatoire();
     this->decorerCarte();
@@ -135,13 +147,10 @@ void Game::jouer() {
     while (this->hero->getVie() > 0) {
         cout << this->carte.afficherCarte() << endl;
         this->hero->description();
-        this->lireMessages();
-        char c = _getch(); // Utilisation de _getch() pour capturer la touche appuyée sans appuyer sur Entrée
-        while (this->actions.count(c) == 0) {
-            c = _getch(); // Attendre une touche valide
-        }
-        if (this->actions.count(c) > 0) {
-            this->actions[c](*this->hero); // Exécuter l'action associée
+        // Tour hero
+        bool tourFini = false;
+        while (tourFini == false) {
+            tourFini = this->tour();
         }
         // Bouger tous les monstres vers le héros
         this->carte.deplacerTousLesMonstres();
@@ -159,9 +168,13 @@ void Game::jouer() {
                 this->carte.genererPiece(1);
             }
             this->carte.atteindreToutesPieces();
-            this->carte.placerElement(hero, this->carte.getPieces()[0].centre());
+            this->carte.initHeroCarte(this->hero);
             this->decorerCarte();
             this->placerCoffreAleatoire();
+            cout << endl << endl;
+            cout << "Bien joue hero ! Tous les monstres ont ete elimines !" << endl;
+            cout << "Bienvenu au niveau superieur : niveau " << this->niveau << endl;
+            cout << endl;
         }
     }
 }

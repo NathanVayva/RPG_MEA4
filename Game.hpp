@@ -26,11 +26,11 @@ public:
     virtual ~Game();
     void creerCarte();
     void decorerCarte();
-    void ajouterMessage(const string& message);
-    void lireMessages();
+    void printMessage(string message) const;
     Equipement randEquipement() const;
     void placerCoffreAleatoire();
     Creature* randMonstre() const;
+    bool tour();
     void jouer();
 };
 

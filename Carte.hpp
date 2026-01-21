@@ -45,6 +45,9 @@ public:
     vector<Piece> getPieces() const;
     void clearPieces();
     void clearMatrice();
+    // New
+    void initHeroCarte(Personnage* hero);
+    int getMatriceSize() const;
     // fonctions
     void ajouterPiece(Piece p);
     optional<Piece> getPieceAt(const Coordonnee& c) const;

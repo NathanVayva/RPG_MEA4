@@ -41,6 +41,21 @@ Carte::~Carte() {
     matrice.clear();
 }
 
+int Carte::getMatriceSize() const {
+    return this->matrice.size();
+}
+
+void Carte::initHeroCarte(Personnage* hero) {
+    // On efface temporairement le hero de la carte
+    Coordonnee ancienHero = this->elements[hero];
+    this->elementsParCoord.erase(ancienHero);
+    // On le replace au centre d'une piece
+    Coordonnee c = this->pieces[0].centre();
+    this->matrice[c.getY()][c.getX()] = hero->getAbbreviation(); // Place l'abréviation de l'élément dans la matrice
+    this->elements[hero] = c; // Ajoute l'élément à la map des elements existants
+    this->elementsParCoord[c] = hero;
+}
+
 int Carte::getEnnemisRestants() const {
     return this->ennemisRestants;
 }
