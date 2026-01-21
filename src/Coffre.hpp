@@ -10,7 +10,7 @@ private:
     bool ouvert;
     Equipement* contenu;
 public:
-    Coffre(string nom, string abbreviation, Equipement* contenu);
+    Coffre(string nom, Equipement* contenu);
     bool isOuvert() const;
     Equipement* ouvrir();
 };

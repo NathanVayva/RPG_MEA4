@@ -69,15 +69,20 @@ void Creature::setArmure(Armures nouvelleArmure) {
 
 
 
-bool Creature::taper(Creature* cible) const {
+bool Creature::taper(Creature* cible) {
     // Inflige des dégâts à la cible et retourne true si la cible est vaincue, faux sinon.
     cible->setVie(cible->getVie() - max( 0, (this->force + this->arme.getDegats()) - cible->getArmure().getRes_physique()));
+    cout << this->description() << " attaque " << cible->description() << endl;
     if (cible->getVie() <= 0) {
         return true; // La cible est vaincue
     }
     else {
         return false; // La cible est toujours en vie
     }
+}
+
+string Creature::description() const {
+    return "<" + this->getNom() + "> (Vie: " + to_string(this->vie) + "/" + to_string(this->vieMax) + ")";
 }
 
 string Creature::fullDescription() const {

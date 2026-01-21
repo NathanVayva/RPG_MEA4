@@ -13,6 +13,8 @@
 #include "Carte.hpp"
 #include "Game.hpp"
 #include "Guerrier.hpp"
+#include "Mage.hpp"
+#include "Voleur.hpp"
 
 int main() {
 	Personnage* hero = nullptr;
@@ -32,11 +34,14 @@ int main() {
 			hero->addObjet(Consommables("Potion de vie", "pv", 10, 20, 0, 0, 0, 0));
 			break;
 		case '2':
-			// Mage hero = Mage();
-			cout << "Mage selected" << endl;
+			hero = new Mage("Erasmus");
+			hero->setArgent(100);
+			hero->addObjet(Consommables("Potion de vie", "pv", 10, 20, 0, 0, 0, 0));
 			break;
 		case '3':
-			// Mage hero = Voleur();
+			hero = new Voleur("Sasuke");
+			hero->setArgent(100);
+			hero->addObjet(Consommables("Potion de vie", "pv", 10, 20, 0, 0, 0, 0));
 			cout << "Voleur selected" << endl;
 			break;
 		default:

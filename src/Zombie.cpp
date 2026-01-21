@@ -2,7 +2,7 @@
 #include <random>
 
 Zombie::Zombie(string nom, int vieMax, int force, int xp, int argent)
-    : Creature(nom, "🧟‍♂️", vieMax, force, xp, argent) {
+    : Creature(nom, "🧟‍♂️ ", vieMax, force, xp, argent) {
 }
 
 
@@ -28,4 +28,12 @@ bool Zombie::mordre(Creature* cible) {
         return true; // La cible est vaincue
     }
     return false; // La cible est toujours en vie
+}
+
+string Zombie::description() const {
+    return "<" + this->getNom() + "> (Vie: " + to_string(this->getVie()) + "/" + to_string(this->getVieMax()) + ")";
+}
+
+string Zombie::fullDescription() const {
+    return "<" + std::string(this->getNom()) + "> (Vie: " + to_string(this->getVie()) + "/" + to_string(this->getVieMax()) + ", Force: " + to_string(this->getForce()) + ")";
 }

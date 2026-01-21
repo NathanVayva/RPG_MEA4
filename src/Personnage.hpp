@@ -36,8 +36,9 @@ public:
 
 
 
-    bool taper(Creature* cible);
-    string fullDescription() const;
+    bool taper(Creature* cible) override;
+    string description() const override;
+    string fullDescription() const override;
 
     bool utiliserObjet( Creature* cible);
 

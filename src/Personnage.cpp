@@ -83,6 +83,10 @@ bool Personnage::taper(Creature* cible) {
 	return cibleVaincue;
 }
 
+string Personnage::description() const {
+    return "<" + this->getNom() + "> (Vie: " + to_string(this->getVie()) + "/" + to_string(this->getVieMax()) + " )";
+}
+
 string Personnage::fullDescription() const {
 	return "<" + this->getNom() + "> (Vie: " + to_string(this->getVie()) + "/" + to_string(this->getVieMax()) +
 			", Force: " + to_string(this->getForce()) +

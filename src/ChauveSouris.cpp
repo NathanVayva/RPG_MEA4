@@ -1,7 +1,7 @@
 #include "ChauveSouris.hpp"
 
 ChauveSouris::ChauveSouris(string nom, int vieMax, int force, int xp, int argent)
-    : Creature(nom, "🦇", vieMax, force, xp, argent) {
+    : Creature(nom, "🦇 ", vieMax, force, xp, argent) {
 }
 
 
@@ -21,4 +21,12 @@ bool ChauveSouris::voleVie(Creature* cible) {
     else {
         return false; // La cible est toujours en vie
     }
+}
+
+string ChauveSouris::description() const {
+    return "<" + this->getNom() + "> (Vie: " + to_string(this->getVie()) + "/" + to_string(this->getVieMax()) + ")";
+}
+
+string ChauveSouris::fullDescription() const {
+        return "<" + std::string(this->getNom()) + "> (Vie: " + to_string(this->getVie()) + "/" + to_string(this->getVieMax()) + ", Force: " + to_string(this->getForce()) + ")";
 }

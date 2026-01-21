@@ -2,7 +2,7 @@
 #include <random>
 
 Voleur::Voleur(std::string nom)
-    : Personnage(nom, "🥷", 80, 12, 30),
+    : Personnage(nom, "🥷 ", 80, 12, 30),
       chanceEsquive(0.30f),
       chanceCritique(0.40f)
 {
@@ -14,6 +14,10 @@ float Voleur::getChanceEsquive() const {
 
 float Voleur::getChanceCritique() const {
     return chanceCritique;
+}
+
+string Voleur::description() const {
+    return "<" + this->getNom() + "> (Vie: " + to_string(this->getVie()) + "/" + to_string(this->getVieMax()) + ")";
 }
 
 bool Voleur::taper(Creature* cible) {

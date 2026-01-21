@@ -13,8 +13,9 @@ public:
     float getChanceEsquive() const;
     float getChanceCritique() const;
 
-    bool taper(Creature* cible);
-    std::string fullDescription() const;
+    bool taper(Creature* cible) override;
+    string description() const override;
+    string fullDescription() const override;
 };
 
 #endif

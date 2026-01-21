@@ -1,6 +1,6 @@
 #include "Coffre.hpp"
 
-Coffre::Coffre(string nom, string abbreviation, Equipement* contenu) : Element(nom, abbreviation){
+Coffre::Coffre(string nom, Equipement* contenu) : Element(nom, "⚱️ "){
     this->ouvert = false;
     this->contenu = contenu;
 }
@@ -11,7 +11,11 @@ bool Coffre::isOuvert() const {
 }
 
 Equipement* Coffre::ouvrir() {
-    // Ouvre le coffre et retourne son contenu
-    this->ouvert = true; // Le coffre est maintenant ouvert
-    return this->contenu;
+    if (ouvert || !contenu) return nullptr;
+
+    ouvert = true;
+    Equipement* tmp = contenu;
+    contenu = nullptr; //  TRANSFERT DE PROPRIÉTÉ
+    return tmp;
 }
+

@@ -36,3 +36,7 @@ std::string Guerrier::fullDescription() const {
            ", Force " + std::to_string(getForce()) +
            ", Crit " + std::to_string(int(tauxCritique * 100)) + "%)";
 }
+
+string Guerrier::description() const {
+    return "<" + this->getNom() + "> (Vie: " + to_string(this->getVie()) + "/" + to_string(this->getVieMax()) + ")";
+}

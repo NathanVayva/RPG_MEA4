@@ -30,8 +30,9 @@ public:
     void setArgent(int nouvelArgent);
     void setArme(Armes nouvelleArme);
     void setArmure(Armures nouvelleArmure);
-    bool taper(Creature* cible) const;
-    string fullDescription() const;
+    virtual bool taper(Creature* cible);
+    virtual string description() const;
+    virtual string fullDescription() const;
 };
 
 #endif /* CREATURE_HPP_ */

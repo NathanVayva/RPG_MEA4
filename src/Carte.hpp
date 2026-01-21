@@ -30,8 +30,8 @@ public:
     Carte(int size, Personnage* hero); // Ajouter le héros au constructeur
     virtual ~Carte();
     // Déclaration des char pour la map
-    static constexpr string sol = "░░ ";
-    static constexpr string vide = "   ";
+    static constexpr string sol = "░░ ";
+    static constexpr string vide = "   ";
     // Déclaration map
     static const map<char, Coordonnee> dir;  // déclaration, définition après
     // get/set
@@ -66,6 +66,9 @@ public:
     void enleverElement(const Coordonnee& c);
     void deplacement(Creature* c, const Coordonnee& direction);
     void deplacerTousLesMonstres();
+
+    void initHeroCarte(Personnage* hero);
+    int getMatriceSize() const;
 };
 
 #endif /* CARTE_HPP_ */
